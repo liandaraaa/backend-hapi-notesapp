@@ -1,6 +1,6 @@
-const { nanoid } = require('nanoid');
+import { nanoid } from 'nanoid';
 
-class NotesService{
+class NotesService {
     constructor(){
         this._notes = []
     }
@@ -65,4 +65,4 @@ class NotesService{
 
 }
 
-module.exports = NotesService;
+export default NotesService;

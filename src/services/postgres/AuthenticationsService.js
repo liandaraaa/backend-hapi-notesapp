@@ -1,5 +1,5 @@
-const { Pool } = require('pg');
- 
+import { Pool } from 'pg';
+
 class AuthenticationsService {
   constructor() {
     this._pool = new Pool();
@@ -36,5 +36,5 @@ class AuthenticationsService {
     await this._pool.query(query);
   }
 }
- 
-module.exports = AuthenticationsService;
+
+export default AuthenticationsService;

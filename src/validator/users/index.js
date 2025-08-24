@@ -1,6 +1,6 @@
-const InvariantError = require('../../exceptions/InvariantError');
-const { UserPayloadSchema } = require('./schema');
- 
+import InvariantError from "../../exceptions/InvariantError.js";
+import UserPayloadSchema from "./schema.js";
+
 const UsersValidator = {
   validateUserPayload: (payload) => {
     const validationResult = UserPayloadSchema.validate(payload);
@@ -11,4 +11,4 @@ const UsersValidator = {
   },
 };
 
-module.exports = UsersValidator;
+export default UsersValidator;

@@ -1,9 +1,9 @@
-const { nanoid } = require('nanoid');
-const { Pool } = require('pg');
-const bcrypt = require('bcrypt');
-const InvariantError = require('../../exceptions/InvariantError');
-const NotFoundError = require('../../exceptions/NotFoundError')
-const AuthenticationError = require('../../exceptions/AuthenticationError')
+import { nanoid } from 'nanoid';
+import { Pool } from 'pg';
+import bcrypt from 'bcrypt';
+import InvariantError from '../../exceptions/InvariantError.js';
+import NotFoundError from '../../exceptions/NotFoundError.js';
+import AuthenticationError from '../../exceptions/AuthenticationError.js';
 
 class UsersService {
   constructor() {
@@ -80,4 +80,4 @@ class UsersService {
   }
 }
 
-module.exports = UsersService;
+export default UsersService;

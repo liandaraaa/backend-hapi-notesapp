@@ -1,6 +1,6 @@
-const InvariantError = require('../../exceptions/InvariantError');
-const { NotePayloadSchema } = require('./schema');
- 
+import InvariantError from "../../exceptions/InvariantError.js";
+import NotePayloadSchema from "./schema.js";
+
 const NotesValidator = {
   validateNotePayload: (payload) => {
     const validationResult = NotePayloadSchema.validate(payload);
@@ -9,5 +9,5 @@ const NotesValidator = {
     }
   },
 };
- 
-module.exports = NotesValidator;
+
+export default NotesValidator;
