@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 
 import Hapi from '@hapi/hapi';
+import Jwt from '@hapi/jwt';
 
 import NotesValidator from './validator/notes/index.js';
 import NotesService from './services/postgres/NotesService.js';
@@ -33,6 +34,28 @@ const init = async () => {
         origin: ['*'],
       },
     },
+  });
+
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
+
+   server.auth.strategy('notesapp_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
   });
 
   await server.register([
