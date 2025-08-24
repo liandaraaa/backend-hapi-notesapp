@@ -1,9 +1,11 @@
 import { nanoid } from 'nanoid';
 
 class NotesService {
-    constructor(){
-        this._notes = []
-    }
+
+  constructor(collaborationService) {
+    this._pool = new Pool();
+    this._collaborationService = collaborationService;
+  }
 
     addNote({title,body,tags}){
         const id = nanoid(16);
@@ -61,6 +63,21 @@ class NotesService {
      throw new NotFoundError('Catatan gagal dihapus. Id tidak ditemukan');
     }
     this._notes.splice(index, 1);
+  }
+
+   async verifyNoteAccess(noteId, userId) {
+    try {
+      await this.verifyNoteOwner(noteId, userId);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+      try {
+        await this._collaborationService.verifyCollaborator(noteId, userId);
+      } catch {
+        throw error;
+      }
+    }
   }
 
 }
