@@ -23,18 +23,32 @@ import ExportsValidator from './validator/exports/index.js';
 import ProducerService from './services/rabbitmq/ProducerService.js';
 import _exports from './api/exports/index.js';
 
+import UploadsValidator from './validator/upload/index.js';
+import StorageService from './services/storage/StorageService.js';
+import uploads from './api/uploads/index.js';
+
 import TokenManager from './tokenize/TokenManager.js';
 
 import ClientError from './exceptions/ClientError.js';
 
+import inert from '@hapi/inert';
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 dotenv.config();
 
 const init = async () => {
-   const collaborationsService = new CollaborationsService();
+  const collaborationsService = new CollaborationsService();
   const notesService = new NotesService(collaborationsService);
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
 
+  const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+  const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
+ 
   const server = Hapi.server({
     port: process.env.PORT,
     host: process.env.HOST,
@@ -49,6 +63,9 @@ const init = async () => {
     {
       plugin: Jwt,
     },
+    {
+      plugin: inert,
+    }
   ]);
 
    server.auth.strategy('notesapp_jwt', 'jwt', {
@@ -106,6 +123,13 @@ const init = async () => {
         validator: ExportsValidator,
       },
     },
+    {
+      plugin: uploads,
+      options: {
+        service: storageService,
+        validator: UploadsValidator,
+      },
+    }
   ]);
 
   server.ext('onPreResponse', (request, h) => {
