@@ -27,6 +27,8 @@ import UploadsValidator from './validator/upload/index.js';
 import StorageService from './services/storage/StorageService.js';
 import uploads from './api/uploads/index.js';
 
+import CacheService from './services/redis/CacheService.js';
+
 import TokenManager from './tokenize/TokenManager.js';
 
 import ClientError from './exceptions/ClientError.js';
@@ -40,8 +42,9 @@ import { dirname } from 'path';
 dotenv.config();
 
 const init = async () => {
-  const collaborationsService = new CollaborationsService();
-  const notesService = new NotesService(collaborationsService);
+   const cacheService = new CacheService();
+    const collaborationsService = new CollaborationsService(cacheService);
+  const notesService = new NotesService(collaborationsService, cacheService);
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
 
