@@ -1,3 +1,5 @@
+import ClientError from '../../exceptions/ClientError.js';
+
 class NotesHandler {
   constructor(service, validator) {
     this._service = service;
