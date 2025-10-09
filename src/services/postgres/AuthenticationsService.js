@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import InvariantError from '../../exceptions/InvariantError.js';
 
 class AuthenticationsService {
   constructor() {
